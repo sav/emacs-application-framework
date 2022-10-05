@@ -1376,28 +1376,30 @@ WEBENGINE-INCLUDE-PRIVATE-CODEC is only useful when app-name is video-player."
   (setq eaf--first-start-app-buffers nil))
 
 (defun eaf--update-buffer-details (buffer-id title url)
+  ;;; XXX XXX commented by sav@alekhine, 05/10/22
   "Function for updating buffer details with its BUFFER-ID, TITLE and URL."
-  (when (eaf--called-from-wsl-on-windows-p)
-    (eaf-monitor-configuration-change))
-  (when (and (> (length title) 0)
-             ;; NOTE: When run eaf-browser, this function will be
-             ;; called twice, buffer name will be changed twice too,
-             ;; To prevent mode-line flickr, we do not change buffer
-             ;; name when when title is equal url.
-             (not (equal title url)))
-    (catch 'found-eaf
-      (dolist (window (window-list))
-        (let ((buffer (window-buffer window)))
-          (with-current-buffer buffer
-            (when (and
-                   (derived-mode-p 'eaf-mode)
-                   (equal eaf--buffer-id buffer-id))
-              (setq mode-name (concat "EAF/" eaf--buffer-app-name))
-              (setq-local eaf--bookmark-title title)
-              (setq-local eaf--buffer-url url)
-              (rename-buffer (format eaf-buffer-title-format title) t)
-              (eaf--update-modeline-icon)
-              (throw 'found-eaf t))))))))
+  ;; (when (eaf--called-from-wsl-on-windows-p)
+  ;;   (eaf-monitor-configuration-change))
+  ;; (when (and (> (length title) 0)
+  ;;            ;; NOTE: When run eaf-browser, this function will be
+  ;;            ;; called twice, buffer name will be changed twice too,
+  ;;            ;; To prevent mode-line flickr, we do not change buffer
+  ;;            ;; name when when title is equal url.
+  ;;            (not (equal title url)))
+  ;;   (catch 'found-eaf
+  ;;     (dolist (window (window-list))
+  ;;       (let ((buffer (window-buffer window)))
+  ;;         (with-current-buffer buffer
+  ;;           (when (and
+  ;;                  (derived-mode-p 'eaf-mode)
+  ;;                  (equal eaf--buffer-id buffer-id))
+  ;;             (setq mode-name (concat "EAF/" eaf--buffer-app-name))
+  ;;             (setq-local eaf--bookmark-title title)
+  ;;             (setq-local eaf--buffer-url url)
+  ;;             (rename-buffer (format eaf-buffer-title-format title) t)
+  ;;             (eaf--update-modeline-icon)
+  ;;             (throw 'found-eaf t)))))))
+  )
 
 (defvar eaf-search-input-active-p nil)
 (defvar eaf-search-input-buffer-id nil)
